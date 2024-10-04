@@ -20,7 +20,7 @@ class BottomSheetProvider with ChangeNotifier {
   ];
   
   late List<Document> filteredDocuments; 
-    late Timer _debounce = Timer(const Duration(seconds: 0), () {}); // Initialize _debounce
+  late Timer _debounce = Timer(const Duration(seconds: 0), () {}); 
 
 
   BottomSheetProvider() {
