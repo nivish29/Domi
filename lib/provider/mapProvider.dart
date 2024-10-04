@@ -21,14 +21,14 @@ class MapProvider extends ChangeNotifier {
   String curr = "";
   bool _mapReady = false;
   final String apiKey = 'AIzaSyBdpHK36b_FWVj9KIDXfkJx3RUzGnbCcOU';
-  LatLng? _cachedPosition;
-  double? _cachedZoom;
+  Set<Marker> markers_map = {};
 
   CameraPosition? get initialCameraPosition => initialCameraPosition_map;
   Marker? get currentLocationMarker => currentLocationMarker_map;
   Set<Polygon> get polygons => polygons_map;
   LatLng? get lastTappedPoint => _lastTappedPoint;
   bool get mapReady => _mapReady;
+  Set<Marker> get markers => markers_map;
 
   MapProvider() {
     _getCurrentLocation();
@@ -163,14 +163,24 @@ class MapProvider extends ChangeNotifier {
 
   void onMapTapped(LatLng tappedPoint, BuildContext context) async {
     _lastTappedPoint = tappedPoint;
+    markers_map.clear();
+    Marker tappedMarker = Marker(
+      markerId: MarkerId(tappedPoint.toString()),
+      position: tappedPoint,
+      infoWindow: InfoWindow(title: 'Tapped Location'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+    );
+
+    markers_map.add(tappedMarker);
     showInviteDialog(context);
+
     notifyListeners();
   }
 
   Future<void> _detail(LatLng center) async {
     final url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
         'location=${center.latitude},${center.longitude}'
-        '&radius=20'
+        '&radius=10'
         '&type=establishment'
         '&key=$apiKey';
 

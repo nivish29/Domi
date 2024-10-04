@@ -30,54 +30,120 @@ class _HomeScreenStateState extends State<HomeScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final bottomSheetProvider = Provider.of<BottomSheetProvider>(context);
-    final mapProvider = Provider.of<MapProvider>(context);
+  // @override
+  // Widget build(BuildContext context) {
+  //   final bottomSheetProvider = Provider.of<BottomSheetProvider>(context);
+  //   final mapProvider = Provider.of<MapProvider>(context);
 
-    return Scaffold(
-      backgroundColor: Color(0xff33485E),
-      body: Stack(
-        children: [
-          if (mapProvider.initialCameraPosition != null)
-            GoogleMap(
-              initialCameraPosition: mapProvider.initialCameraPosition!,
-              onMapCreated: (GoogleMapController controller) {
-                controller.setMapStyle(mapStyle);
-                mapProvider.completeMapController(controller);
-              },
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
-              markers: mapProvider.currentLocationMarker != null
-                  ? {mapProvider.currentLocationMarker!}
-                  : {},
-              polygons: mapProvider.polygons,
-              onTap: (LatLng tappedPoint) async {
-                await bottomSheetController.animateTo(
-                  0.0,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeInOut,
-                );
-                mapProvider.onMapTapped(tappedPoint, context);
-              },
-            )
-          else
-            const Center(child: SizedBox()),
-          if (mapProvider.mapReady)
-            Positioned.fill(
-              child: Container(),
-            ),
-          Positioned(
-            top: 50,
-            left: 10,
-            right: 10,
-            child: buildTopBar(context, mapProvider),
+  //   return Scaffold(
+  //       backgroundColor: Color(0xff33485E),
+  //       body: Stack(
+  //         children: [
+  //           if (mapProvider.initialCameraPosition != null)
+  //             GoogleMap(
+  //               initialCameraPosition: mapProvider.initialCameraPosition!,
+  //               onMapCreated: (GoogleMapController controller) {
+  //                 controller.setMapStyle(mapStyle);
+  //                 mapProvider.completeMapController(controller);
+  //                 // mapProvider.createBuildingPolygon();
+  //               },
+  //               myLocationButtonEnabled: false,
+  //               zoomControlsEnabled: false,
+  //               markers: mapProvider.currentLocationMarker != null
+  //                   ? {
+  //                       mapProvider.currentLocationMarker!,
+  //                       ...mapProvider.markers
+  //                     }
+  //                   : mapProvider.markers,
+  //               polygons: mapProvider.polygons,
+  //               onTap: (LatLng tappedPoint) async {
+  //                 // mapProvider.addPolygonPoint(tappedPoint);
+  //                 await bottomSheetController.animateTo(
+  //                   0.0,
+  //                   duration: const Duration(milliseconds: 200),
+  //                   curve: Curves.easeInOut,
+  //                 );
+  //                 mapProvider.onMapTapped(tappedPoint, context);
+  //               },
+  //             )
+  //           else
+  //             const Center(child: SizedBox()),
+  //           if (mapProvider.mapReady)
+  //             Positioned.fill(
+  //               child: Container(),
+  //             ),
+  //           Positioned(
+  //             top: 50,
+  //             left: 10,
+  //             right: 10,
+  //             child: buildTopBar(context, mapProvider),
+  //           ),
+  //           if (bottomSheetProvider.isBottomSheetVisible)
+  //             buildDraggableBottomSheet(context),
+  //         ],
+  //       ));
+  // }
+
+  @override
+Widget build(BuildContext context) {
+  final bottomSheetProvider = Provider.of<BottomSheetProvider>(context);
+  final mapProvider = Provider.of<MapProvider>(context);
+
+  return Scaffold(
+    backgroundColor: const Color(0xff33485E),
+    body: Stack(
+      children: [
+        if (mapProvider.initialCameraPosition != null)
+          GoogleMap(
+            initialCameraPosition: mapProvider.initialCameraPosition!,
+            onMapCreated: (GoogleMapController controller) {
+              controller.setMapStyle(mapStyle);
+              mapProvider.completeMapController(controller);
+            },
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
+            markers: mapProvider.currentLocationMarker != null
+                ? {
+                    mapProvider.currentLocationMarker!,
+                    ...mapProvider.markers,
+                  }
+                : mapProvider.markers,
+            polygons: mapProvider.polygons_map,
+            onTap: (LatLng tappedPoint) async {
+              // Scroll to top of the bottom sheet when the map is tapped
+              await bottomSheetController.animateTo(
+                0.0,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+              );
+              mapProvider.onMapTapped(tappedPoint, context);
+            },
+          )
+        else
+          const Center(child: SizedBox()),
+
+        // Overlay to display when the map is ready
+        if (mapProvider.mapReady)
+          Positioned.fill(
+            child: Container(), // You can add loading indicators here if needed
           ),
-          if (bottomSheetProvider.isBottomSheetVisible)
-            buildDraggableBottomSheet(context),
-        ],)
-    );
-  }
+
+        // Top bar positioned at the top of the screen
+        Positioned(
+          top: 50,
+          left: 10,
+          right: 10,
+          child: buildTopBar(context, mapProvider),
+        ),
+
+        // Draggable bottom sheet visibility check
+        if (bottomSheetProvider.isBottomSheetVisible)
+          buildDraggableBottomSheet(context),
+      ],
+    ),
+  );
+}
+
 
   Widget buildTopBar(BuildContext context, MapProvider mapProvider) {
     return Row(
