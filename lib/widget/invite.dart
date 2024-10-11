@@ -1,12 +1,11 @@
-import 'package:domi_assignment/provider/bottomsheetProvider.dart';
+import 'package:domi_assignment/feature/bottomsheet/presentation/bloc/bottom_sheet_bloc.dart';
+import 'package:domi_assignment/feature/map_screen/presentation/bloc/map_bloc.dart';
+import 'package:domi_assignment/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 Future<void> showInviteDialog(BuildContext context) async {
-  final bottomSheetProvider =
-      Provider.of<BottomSheetProvider>(context, listen: false);
-
-  bottomSheetProvider.hideBottomSheet();
+  context.read<BottomSheetBloc>().add(HideBottomSheet());
   showDialog(
     context: context,
     barrierDismissible: true,
@@ -17,7 +16,7 @@ Future<void> showInviteDialog(BuildContext context) async {
           padding: const EdgeInsets.all(16.0),
           child: Material(
             borderRadius: BorderRadius.circular(16),
-            color: Colors.black,
+            color: AppPallete.blackColor,
             child: Container(
               padding: const EdgeInsets.all(16),
               width: MediaQuery.of(context).size.width * 0.9,
@@ -33,28 +32,30 @@ Future<void> showInviteDialog(BuildContext context) async {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: AppPallete.whiteColor,
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
+                          context.read<MapBloc>().add(EmptyMarkerData());
                           Navigator.of(context).pop();
                         },
-                        child: const Icon(Icons.close, color: Colors.white),
+                        child: const Icon(Icons.close,
+                            color: AppPallete.whiteColor),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
                   const Text(
                     'Invite your neighbor and you both receive \$10 when they claim their address.',
-                    style: TextStyle(color: Colors.grey, fontSize: 15),
+                    style: TextStyle(color: AppPallete.greyColor, fontSize: 15),
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
+                      backgroundColor: AppPallete.whiteColor,
+                      foregroundColor: AppPallete.blackColor,
                       padding: EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -78,6 +79,7 @@ Future<void> showInviteDialog(BuildContext context) async {
       );
     },
   ).then((_) {
-    bottomSheetProvider.showBottomSheet();
+    context.read<MapBloc>().add(EmptyMarkerData());
+    context.read<BottomSheetBloc>().add(ShowBottomSheet());
   });
 }

@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 import 'dart:ui';
+import 'package:domi_assignment/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,7 +11,7 @@ class MapMarkers {
     final int size = 100;
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
-    final Paint paint = Paint()..color = Colors.white;
+    final Paint paint = Paint()..color = AppPallete.whiteColor;
 
     final Uint8List imageUint8List = await _getBytesFromAsset(imagePath, size);
     final ui.Codec codec = await ui.instantiateImageCodec(imageUint8List);

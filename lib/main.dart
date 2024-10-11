@@ -1,15 +1,32 @@
-import 'package:domi_assignment/provider/bottomsheetProvider.dart';
-import 'package:domi_assignment/provider/mapProvider.dart';
-import 'package:domi_assignment/screens/splash_screen.dart';
+import 'package:domi_assignment/feature/app_apearance/presentation/bloc/app_appearance_bloc.dart';
+import 'package:domi_assignment/feature/bottomsheet/presentation/bloc/bottom_sheet_bloc.dart';
+import 'package:domi_assignment/feature/map_screen/presentation/bloc/map_bloc.dart';
+import 'package:domi_assignment/init_dependencies.dart';
+import 'package:domi_assignment/routes/app_route_config.dart';
+import 'package:domi_assignment/theme/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  initDependencies();
+
   runApp(
-    MultiProvider(
+    MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => BottomSheetProvider()),
-        ChangeNotifierProvider(create: (_) => MapProvider()),
+         BlocProvider<BottomSheetBloc>(
+          create: (context) => getIt<BottomSheetBloc>(),
+        ),
+        BlocProvider<AppAppearanceBloc>(
+          create: (context) => getIt<AppAppearanceBloc>(),
+        ),
+        BlocProvider<MapBloc>(
+          create: (context) => getIt<MapBloc>(),
+        ),
+       
       ],
       child: const MyApp(),
     ),
@@ -21,15 +38,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-       navigatorKey: navigatorKey,
-      title: 'Domi',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const SplashScreen(),
+    return BlocBuilder<AppAppearanceBloc, AppAppearanceState>(
+      builder: (context, state) {
+        ThemeData themeData;
+        if (state is AppAppearanceUpdated) {
+          switch (state.selectedTheme) {
+            case 'Light':
+              themeData = AppThemes.lightTheme;
+              break;
+            case 'Dark':
+              themeData = AppThemes.darkTheme;
+              break;
+            case 'System':
+            default:
+              themeData = Theme.of(context).brightness == Brightness.light
+                  ? AppThemes.lightTheme
+                  : AppThemes.darkTheme;
+              break;
+          }
+        } else {
+          themeData = AppThemes.lightTheme;
+        }
+
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Domi',
+          theme: themeData,
+          routerConfig: AppRouter().router,
+        );
+      },
     );
   }
 }

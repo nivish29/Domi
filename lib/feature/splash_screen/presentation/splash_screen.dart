@@ -1,5 +1,10 @@
-import 'package:domi_assignment/screens/home_screen.dart';
+import 'package:domi_assignment/routes/app_route_constants.dart';
+import 'package:domi_assignment/feature/map_screen/presentation/pages/HomePage.dart'
+    as hs;
+import 'package:domi_assignment/theme/app_pallete.dart';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -43,8 +48,8 @@ class _SplashScreenState extends State<SplashScreen> {
         isanimate4 = false;
       });
     });
-     Future.delayed(const Duration(milliseconds: 2200), () {
-     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    Future.delayed(const Duration(milliseconds: 2200), () {
+      context.goNamed(MyAppRouteConstant.homeScreenRoute);
     });
   }
 
@@ -53,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     return Scaffold(
-      backgroundColor:const Color.fromARGB(255, 250, 250, 250),
+      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       body: Stack(
         children: [
           AnimatedPositioned(
@@ -69,7 +74,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 30,
                 decoration: BoxDecoration(
                     color: Colors.red, borderRadius: BorderRadius.circular(30)),
-                child:const Center(child: Text('O', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+                child: const Center(
+                    child: Text('O',
+                        style: TextStyle(
+                            color: AppPallete.whiteColor,
+                            fontWeight: FontWeight.bold))),
               ),
             ),
           ),
@@ -79,16 +88,20 @@ class _SplashScreenState extends State<SplashScreen> {
             left: isanimate3 ? width * 0.5 - 24 : width * 0.5 + 4,
             top: height * 0.5 + 4,
             child: AnimatedOpacity(
-              duration:const  Duration(milliseconds: 50),
+              duration: const Duration(milliseconds: 50),
               opacity: isanimate3 ? 0 : 1,
               child: Container(
                 width: 30,
                 height: 30,
                 decoration: BoxDecoration(
-                  color: Colors.grey,
+                  color: AppPallete.greyColor,
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: const Center(child: Text('I', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+                child: const Center(
+                    child: Text('I',
+                        style: TextStyle(
+                            color: AppPallete.whiteColor,
+                            fontWeight: FontWeight.bold))),
               ),
             ),
           ),
@@ -98,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen> {
             left: width * 0.5 + 4,
             bottom: isanimate4 ? height * 0.5 - 24 : height * 0.5 + 4,
             child: AnimatedOpacity(
-              duration:const Duration(milliseconds: 100),
+              duration: const Duration(milliseconds: 100),
               opacity: isanimate4 ? 0 : 1,
               child: Container(
                 width: 30,
@@ -107,25 +120,32 @@ class _SplashScreenState extends State<SplashScreen> {
                   color: Colors.grey,
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: Center(child: Text('M', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+                child: Center(
+                    child: Text('M',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold))),
               ),
             ),
           ),
           AnimatedPositioned(
             curve: Curves.easeInOutBack,
-            duration:const Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             right: isanimate1 ? width * 0.5 - 10 : width * 0.5 + 4,
             top: isanimate1 ? height * 0.5 - 10 : height * 0.5 + 4,
             child: Container(
               width: 30,
               height: 30,
               color: Colors.black,
-              child:const Center(child: Text('D', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+              child: const Center(
+                  child: Text('D',
+                      style: TextStyle(
+                          color: AppPallete.whiteColor,
+                          fontWeight: FontWeight.bold))),
             ),
           ),
           Center(
             child: AnimatedOpacity(
-              duration:const Duration(milliseconds: 1),
+              duration: const Duration(milliseconds: 1),
               opacity: isanimate1 ? 1 : 0,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
@@ -133,7 +153,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 width: isanimate ? width : 30,
                 height: isanimate ? height : 30,
                 color: Colors.black,
-                child:const Center(child: Text('D', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+                child: const Center(
+                    child: Text('D',
+                        style: TextStyle(
+                            color: AppPallete.whiteColor,
+                            fontWeight: FontWeight.bold))),
               ),
             ),
           ),
