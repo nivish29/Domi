@@ -17,20 +17,44 @@ void main() {
   runApp(
     MultiBlocProvider(
       providers: [
-         BlocProvider<BottomSheetBloc>(
-          create: (context) => getIt<BottomSheetBloc>(),
-        ),
         BlocProvider<AppAppearanceBloc>(
           create: (context) => getIt<AppAppearanceBloc>(),
         ),
         BlocProvider<MapBloc>(
           create: (context) => getIt<MapBloc>(),
         ),
+        BlocProvider<BottomSheetBloc>(
+          create: (context) => getIt<BottomSheetBloc>(),
+        ),
        
       ],
       child: const MyApp(),
     ),
   );
+  // runApp(
+  //   MultiBlocProvider(
+  //     providers: [
+  //       BlocProvider(
+  //         create: (_) => AppAppearanceBloc(),
+  //       ),
+  //       BlocProvider(
+  //         create: (context) => MapBloc(
+  //           appAppearanceBloc: BlocProvider.of<AppAppearanceBloc>(context),
+  //           getNearestPlace:
+  //               GetNearestPlace(MapRepositoryImpl(MapRemoteDataSource())),
+  //           getBuildingOutline:
+  //               GetBuildingOutline(MapRepositoryImpl(MapRemoteDataSource())),
+  //              processOsmData:ProcessOsmData(),
+                
+  //         ),
+  //       ),
+  //       BlocProvider(
+  //         create: (_) => BottomSheetBloc(),
+  //       ),
+  //     ],
+  //     child: const MyApp(),
+  //   ),
+  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -70,3 +94,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

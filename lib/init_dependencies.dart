@@ -15,18 +15,22 @@ void initDependencies() {
   getIt.registerLazySingleton<MapRemoteDataSource>(() => MapRemoteDataSource());
 
   // Register Repository
-  getIt.registerLazySingleton<MapRepositoryImpl>(() => MapRepositoryImpl(getIt<MapRemoteDataSource>()));
+  getIt.registerLazySingleton<MapRepositoryImpl>(
+      () => MapRepositoryImpl(getIt<MapRemoteDataSource>()));
 
   // Register Use Cases
-  getIt.registerLazySingleton<GetBuildingOutline>(() => GetBuildingOutline(getIt<MapRepositoryImpl>()));
-  getIt.registerLazySingleton<GetNearestPlace>(() => GetNearestPlace(getIt<MapRepositoryImpl>()));
+  getIt.registerLazySingleton<GetBuildingOutline>(
+      () => GetBuildingOutline(getIt<MapRepositoryImpl>()));
+  getIt.registerLazySingleton<GetNearestPlace>(
+      () => GetNearestPlace(getIt<MapRepositoryImpl>()));
   getIt.registerLazySingleton<ProcessOsmData>(() => ProcessOsmData());
 
   // Register BLoCs
-  getIt.registerFactory(() => AppAppearanceBloc());
+  getIt.registerSingleton<AppAppearanceBloc>(AppAppearanceBloc());
   getIt.registerFactory(() => BottomSheetBloc());
   getIt.registerFactory(() => MapBloc(
-        appAppearanceBloc: getIt<AppAppearanceBloc>(),
+        appAppearanceBloc:
+            getIt<AppAppearanceBloc>(), // Ensure the same instance is used
         getNearestPlace: getIt<GetNearestPlace>(),
         getBuildingOutline: getIt<GetBuildingOutline>(),
         processOsmData: getIt<ProcessOsmData>(),

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 import 'package:bloc/bloc.dart';
 import 'package:domi_assignment/theme/app_pallete.dart';
@@ -19,7 +20,7 @@ class AppAppearanceBloc extends Bloc<AppAppearanceEvent, AppAppearanceState> {
 
     on<ChangeThemeEvent>((event, emit) {
       String theme = event.selectedTheme;
-      Color color = AppPallete.initialAppAppearanceColor; 
+      Color color = AppPallete.initialAppAppearanceColor;
 
       emit(AppAppearanceUpdated(selectedTheme: theme, selectedColor: color));
     });
@@ -27,6 +28,7 @@ class AppAppearanceBloc extends Bloc<AppAppearanceEvent, AppAppearanceState> {
     on<ChangeColorEvent>((event, emit) {
       if (state is AppAppearanceUpdated) {
         String currentTheme = (state as AppAppearanceUpdated).selectedTheme;
+        log('color is : ${event.selectedColor.toString()}');
         emit(AppAppearanceUpdated(
           selectedTheme: currentTheme,
           selectedColor: event.selectedColor,
