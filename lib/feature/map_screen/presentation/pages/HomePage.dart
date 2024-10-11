@@ -45,6 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
           BlocConsumer<MapBloc, MapState>(
             listener: (BuildContext context, MapState state) {
               if (state is MapLoaded && state.polygons.isNotEmpty) {
+                bottomSheetController.animateTo(
+                  0.0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
                 showInviteDialog(context);
               }
             },
@@ -74,11 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         context
                             .read<MapBloc>()
                             .add(BuildingOutlineRequested(latLng));
-                        bottomSheetController.animateTo(
-                          0.0,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
                       },
                     );
                   },
@@ -98,8 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context, state) {
               if (state is MapLoaded && state.isLoading) {
                 return Container(
-                  decoration:
-                      BoxDecoration(color: AppPallete.blackColor.withOpacity(0.4)),
+                  decoration: BoxDecoration(
+                      color: AppPallete.blackColor.withOpacity(0.4)),
                   child: Center(
                     child: Container(
                       height: 80,
