@@ -31,30 +31,6 @@ void main() {
       child: const MyApp(),
     ),
   );
-  // runApp(
-  //   MultiBlocProvider(
-  //     providers: [
-  //       BlocProvider(
-  //         create: (_) => AppAppearanceBloc(),
-  //       ),
-  //       BlocProvider(
-  //         create: (context) => MapBloc(
-  //           appAppearanceBloc: BlocProvider.of<AppAppearanceBloc>(context),
-  //           getNearestPlace:
-  //               GetNearestPlace(MapRepositoryImpl(MapRemoteDataSource())),
-  //           getBuildingOutline:
-  //               GetBuildingOutline(MapRepositoryImpl(MapRemoteDataSource())),
-  //              processOsmData:ProcessOsmData(),
-                
-  //         ),
-  //       ),
-  //       BlocProvider(
-  //         create: (_) => BottomSheetBloc(),
-  //       ),
-  //     ],
-  //     child: const MyApp(),
-  //   ),
-  // );
 }
 
 class MyApp extends StatelessWidget {
